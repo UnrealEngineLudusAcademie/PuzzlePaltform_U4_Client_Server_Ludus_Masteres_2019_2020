@@ -30,5 +30,9 @@ public :
 	FVector TargetLocation;
 
 
+private :
+
+	FVector GlobalTargetLocation;
+	FVector GlobalStartLocation;
 	
 };

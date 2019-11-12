@@ -24,6 +24,9 @@ void ACMovingPlatform::BeginPlay()
 		SetReplicateMovement(true);//Active la replication des mouvements sur les clients
 
 	}
+
+	GlobalStartLocation = GetActorLocation(); //Recuperation du vecteur courant de la position Actor
+	GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation); //Definition de la position finale du deplacement
 }
 
 void ACMovingPlatform::Tick(float DeltaTime)
@@ -35,7 +38,16 @@ void ACMovingPlatform::Tick(float DeltaTime)
 	if (HasAuthority()) {
 
 		FVector Location = GetActorLocation();
-		FVector GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
+		float JourneyLenght = (GlobalTargetLocation - GlobalStartLocation).Size();//Determine la longueur du deplacement
+		float JourneyTravelled = (Location - GlobalStartLocation).Size(); //Deplacement realise
+		
+		if (JourneyTravelled >= JourneyLenght) {
+			FVector Swap = GlobalStartLocation;
+			GlobalStartLocation = GlobalTargetLocation;
+			GlobalTargetLocation = Swap;
+
+		}
+		
 		FVector Direction = (GlobalTargetLocation - Location).GetSafeNormal();
 		Location += fltSpeed * DeltaTime*Direction;
 		SetActorLocation(Location);
