@@ -30,9 +30,19 @@ public :
 	FVector TargetLocation;
 
 
-private :
+	void AddActiveTrigger();
+	void RemoveActiveTrigger();
+
+	virtual void print();
+
+
+
+protected :
 
 	FVector GlobalTargetLocation;
 	FVector GlobalStartLocation;
+
+	UPROPERTY(EditAnywhere)
+		int nActiveTriggers;
 	
 };
