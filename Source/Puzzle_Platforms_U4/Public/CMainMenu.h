@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CMenuInterface.h"
 #include "CMainMenu.generated.h"
 
 /**
@@ -34,10 +33,13 @@ protected :
 
 	 bool Initialize();
 
-	 ICMenuInterface *MenuInterface;
+	 class ICMenuInterface *MenuInterface;
 
 public : 
 	void SetMenuInterface(ICMenuInterface *MenuInterface);
+
+	void Setup();
+	void Teardown();
 
 
 

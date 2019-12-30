@@ -2,6 +2,7 @@
 
 
 #include "CMainMenu.h"
+#include "CMenuInterface.h"
 #include "Components/Button.h"
 
 
@@ -22,9 +23,48 @@ bool UCMainMenu::Initialize()
 	return true;
 }
 
-void UCMainMenu::SetMenuInterface(ICMenuInterface * MenuInterface)
+void UCMainMenu::SetMenuInterface(class ICMenuInterface * MenuInterface)
 {
 	this->MenuInterface = MenuInterface;
+}
+
+void UCMainMenu::Setup()
+{
+
+	//display at screen
+	this->AddToViewport();
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	//UI Input Mode show Cursor
+	FInputModeUIOnly InputModeData;
+	InputModeData.SetWidgetToFocus(this->TakeWidget());
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = true;
+}
+
+void UCMainMenu::Teardown()
+{
+
+	this->RemoveFromViewport();
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	FInputModeGameOnly InputModeData;
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = false;
 }
 
 

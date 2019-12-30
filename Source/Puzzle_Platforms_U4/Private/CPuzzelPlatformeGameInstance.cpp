@@ -31,6 +31,12 @@ void UCPuzzelPlatformeGameInstance::Init()
 
 void UCPuzzelPlatformeGameInstance::Host()
 {
+	if (Menu != nullptr) {
+
+		Menu->Teardown();
+
+	}
+
 	UEngine *Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
 
@@ -61,26 +67,11 @@ void UCPuzzelPlatformeGameInstance::LoadMenu()
 {
 	if (!ensure(MenuClass != nullptr)) return;
 
-	UCMainMenu* Menu = CreateWidget<UCMainMenu>(this, MenuClass);
+	Menu = CreateWidget<UCMainMenu>(this, MenuClass);
 
 	if (!ensure(Menu != nullptr)) return;
-	//display at screen
-	Menu->AddToViewport();
-
-	APlayerController *PlayerController = GetFirstLocalPlayerController();
-
-	if (!ensure(PlayerController != nullptr))return;
-
-
-	//UI Input Mode show Cursor
-	FInputModeUIOnly InputModeData;
-
-	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
-	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
-	PlayerController->SetInputMode(InputModeData);
-
-	PlayerController->bShowMouseCursor = true;
+	
+	Menu->Setup();
 
 	Menu->SetMenuInterface(this);
 
