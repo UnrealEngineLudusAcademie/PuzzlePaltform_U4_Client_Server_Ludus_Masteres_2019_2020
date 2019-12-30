@@ -4,6 +4,7 @@
 #include "CMainMenu.h"
 #include "CMenuInterface.h"
 #include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
 
 
 
@@ -14,10 +15,16 @@ bool UCMainMenu::Initialize()
 
 	if (!blnSuccess)return false;
 
-	if (!ensure(Host != nullptr)) return false;
+	if (!ensure(HostButton != nullptr)) return false;
 
 	//Ajout click event OnClicked + appel ref fonction hostServer
-	Host->OnClicked.AddDynamic(this, &UCMainMenu::hostServer);
+	HostButton->OnClicked.AddDynamic(this, &UCMainMenu::hostServer);
+
+	if (!ensure(JoinButton != nullptr)) return false;
+	JoinButton->OnClicked.AddDynamic(this, &UCMainMenu::OpenJoinMenu);
+
+	if (!ensure(CancelJoinMenuButton != nullptr)) return false;
+	CancelJoinMenuButton->OnClicked.AddDynamic(this, &UCMainMenu::OpenMainMenu);
 
 
 	return true;
@@ -76,4 +83,18 @@ void UCMainMenu::hostServer()
 	}
 
 	
+}
+
+void UCMainMenu::OpenJoinMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(JoinMenu != nullptr)) return;
+	MenuSwitcher->SetActiveWidget(JoinMenu);
+}
+
+void UCMainMenu::OpenMainMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(JoinMenu != nullptr)) return;
+	MenuSwitcher->SetActiveWidget(MainMenu);
 }
