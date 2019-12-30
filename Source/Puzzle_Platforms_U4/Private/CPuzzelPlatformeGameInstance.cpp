@@ -13,7 +13,7 @@ UCPuzzelPlatformeGameInstance::UCPuzzelPlatformeGameInstance(const FObjectInitia
 {
 	
 
-	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSystem/UI_MainMenu"));
+	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
 	if (!ensure(MenuBPClass.Class != nullptr))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Missing UI Class"));
