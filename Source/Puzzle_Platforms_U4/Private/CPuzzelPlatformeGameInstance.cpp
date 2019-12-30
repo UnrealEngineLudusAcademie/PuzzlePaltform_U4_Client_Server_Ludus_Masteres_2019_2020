@@ -5,15 +5,27 @@
 
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
+#include "CPlatformTrigger.h"
 
 UCPuzzelPlatformeGameInstance::UCPuzzelPlatformeGameInstance(const FObjectInitializer & ObjectInitializer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Dans le constructeur"));
+	
+
+	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSystem/UI_MainMenu"));
+	if (!ensure(MenuBPClass.Class != nullptr))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Missing UI Class"));
+		return;
+	}
+		
+	MenuClass = MenuBPClass.Class;
 }
 
 void UCPuzzelPlatformeGameInstance::Init()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Dans la methode init()"));
+	UE_LOG(LogTemp, Warning, TEXT("Found class %s"), *MenuClass->GetName());
 }
 
 void UCPuzzelPlatformeGameInstance::Host()
@@ -41,5 +53,33 @@ void UCPuzzelPlatformeGameInstance::Join(const FString & Adress)
 	if (!ensure(PlayerController != nullptr)) return;
 
 	PlayerController->ClientTravel(Adress, ETravelType::TRAVEL_Absolute);
+
+}
+
+void UCPuzzelPlatformeGameInstance::LoadMenu()
+{
+	if (!ensure(MenuClass != nullptr)) return;
+
+	UUserWidget* Menu = CreateWidget<UUserWidget>(this, MenuClass);
+	if (!ensure(Menu != nullptr)) return;
+	//display at screen
+	Menu->AddToViewport();
+
+	APlayerController *PlayerController = GetFirstLocalPlayerController();
+
+	if (!ensure(PlayerController != nullptr))return;
+
+
+	//UI Input Mode show Cursor
+	FInputModeUIOnly InputModeData;
+
+	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = true;
+
+
 
 }
