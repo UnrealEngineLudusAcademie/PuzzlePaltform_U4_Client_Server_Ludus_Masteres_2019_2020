@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "CMenuInterface.h"
 #include "CPuzzelPlatformeGameInstance.generated.h"
 
 
@@ -11,7 +12,7 @@
  * 
  */
 UCLASS()
-class PUZZLE_PLATFORMS_U4_API UCPuzzelPlatformeGameInstance : public UGameInstance
+class PUZZLE_PLATFORMS_U4_API UCPuzzelPlatformeGameInstance : public UGameInstance,public ICMenuInterface
 {
 	GENERATED_BODY()
 

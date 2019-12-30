@@ -22,8 +22,18 @@ bool UCMainMenu::Initialize()
 	return true;
 }
 
+void UCMainMenu::SetMenuInterface(ICMenuInterface * MenuInterface)
+{
+	this->MenuInterface = MenuInterface;
+}
+
 
 void UCMainMenu::hostServer()
 {	
-	UE_LOG(LogTemp, Warning, TEXT("I'm gonna host a server"));
+	if (this->MenuInterface != nullptr) {
+		this->MenuInterface->Host();
+		
+	}
+
+	
 }

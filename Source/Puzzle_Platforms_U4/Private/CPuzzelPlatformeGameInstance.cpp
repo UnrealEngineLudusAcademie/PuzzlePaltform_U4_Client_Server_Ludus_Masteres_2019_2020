@@ -8,6 +8,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "CPlatformTrigger.h"
+#include "CMainMenu.h"
 
 UCPuzzelPlatformeGameInstance::UCPuzzelPlatformeGameInstance(const FObjectInitializer & ObjectInitializer)
 {
@@ -38,8 +39,8 @@ void UCPuzzelPlatformeGameInstance::Host()
 	UWorld *World = GetWorld();
 	if (!ensure(Engine != nullptr))return;
 
-	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
-
+	World->ServerTravel("/Game/Maps/ThirdPersonExampleMap?listen");
+	
 }
 
 void UCPuzzelPlatformeGameInstance::Join(const FString & Adress)
@@ -60,7 +61,8 @@ void UCPuzzelPlatformeGameInstance::LoadMenu()
 {
 	if (!ensure(MenuClass != nullptr)) return;
 
-	UUserWidget* Menu = CreateWidget<UUserWidget>(this, MenuClass);
+	UCMainMenu* Menu = CreateWidget<UCMainMenu>(this, MenuClass);
+
 	if (!ensure(Menu != nullptr)) return;
 	//display at screen
 	Menu->AddToViewport();
@@ -79,6 +81,8 @@ void UCPuzzelPlatformeGameInstance::LoadMenu()
 	PlayerController->SetInputMode(InputModeData);
 
 	PlayerController->bShowMouseCursor = true;
+
+	Menu->SetMenuInterface(this);
 
 
 

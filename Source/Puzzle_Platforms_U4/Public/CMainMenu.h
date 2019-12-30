@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CMenuInterface.h"
 #include "CMainMenu.generated.h"
 
 /**
@@ -24,12 +25,20 @@ private :
 		class UButton *Join;
 
 		UFUNCTION()
-		void hostServer();
+			void hostServer();
+
+
 
 
 protected :
 
-	bool Initialize();
+	 bool Initialize();
+
+	 ICMenuInterface *MenuInterface;
+
+public : 
+	void SetMenuInterface(ICMenuInterface *MenuInterface);
+
 
 
 };
