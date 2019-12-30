@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CMenuWidget.h"
 #include "CMainMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PUZZLE_PLATFORMS_U4_API UCMainMenu : public UUserWidget
+class PUZZLE_PLATFORMS_U4_API UCMainMenu : public UCMenuWidget
 {
 	GENERATED_BODY()
 
@@ -62,13 +63,8 @@ protected :
 
 	 bool Initialize();
 
-	 class ICMenuInterface *MenuInterface;
+	
 
-public : 
-	void SetMenuInterface(ICMenuInterface *MenuInterface);
-
-	void Setup();
-	void Teardown();
 
 
 
