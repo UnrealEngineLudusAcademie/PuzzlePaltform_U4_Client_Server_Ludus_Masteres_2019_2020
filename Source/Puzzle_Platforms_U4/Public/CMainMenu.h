@@ -14,10 +14,22 @@ class PUZZLE_PLATFORMS_U4_API UCMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+private :
+
 
 		UPROPERTY(meta = (BindWidget))
 		class UButton *Host;
 
 		UPROPERTY(meta = (BindWidget))
 		class UButton *Join;
+
+		UFUNCTION()
+		void hostServer();
+
+
+protected :
+
+	bool Initialize();
+
+
 };
